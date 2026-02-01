@@ -4,25 +4,25 @@ import stopword from 'stopword';
 const tokenizer = new natural.WordTokenizer();
 const stemmer = natural.PorterStemmer;
 
-export function preprocessText(text) {
-  // lowercase
-  let clean = text.toLowerCase();
+export const preprocessText = (text) => {
 
-  // remove punctuation & numbers
-  clean = clean.replace(/[^a-z\s]/g, ' ');
+  // 1️⃣ Lowercasing
+  let processedText = text.toLowerCase();
 
-  // tokenize
-  let tokens = tokenizer.tokenize(clean);
+  // 2️⃣ Noise removal (punctuation & special chars)
+  processedText = processedText.replace(/[^\w\s]/g, ' ');
 
-  // remove stopwords
+  // 3️⃣ Tokenization
+  let tokens = tokenizer.tokenize(processedText);
+
+  // 4️⃣ Stopword removal
   tokens = stopword.removeStopwords(tokens);
 
-  // stemming
-  tokens = tokens.map(t => stemmer.stem(t));
+  // 5️⃣ Stemming
+  tokens = tokens.map(token => stemmer.stem(token));
 
   return {
-    clean_text: tokens.join(' '),
-    tokens,
-   // word_count: tokens.length
+    cleaned_text: tokens.join(' '),
+    tokens
   };
-}
+};
